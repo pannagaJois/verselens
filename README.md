@@ -32,10 +32,10 @@ pip install torch transformers sentencepiece numpy huggingface_hub
 
 ### 2. Download the Pretrained Model from Hugging Face
 
-Download the exported model archive directly from the Hugging Face Hub repository:
+Download the export model archive directly from the Hugging Face Hub repository:
 
 ```bash
-hf download pranav-326/verselens-v1 verselens_exported.zip --local-dir .
+hf download pranav-326/verselens-v1 verselens_export.zip --local-dir .
 ```
 
 If the repository is private, authenticate first:
@@ -48,7 +48,7 @@ Extract the archive into the directory expected by `model.py`:
 
 ```bash
 mkdir -p verselens_export
-unzip -o verselens_exported.zip -d verselens_export
+unzip -o verselens_export.zip -d verselens_export
 ```
 
 The `verselens_export/` directory should contain the model checkpoint, metadata, and tokenizer files, including:
@@ -57,7 +57,7 @@ The `verselens_export/` directory should contain the model checkpoint, metadata,
 - `verselens_meta.json`
 - Tokenizer files
 
-> **Note:** The archive must be uploaded to the Hugging Face repository under the filename `verselens_exported.zip`. If you used a different filename, substitute it in the download and extraction commands.
+> **Note:** The archive must be uploaded to the Hugging Face repository under the filename `verselens_export.zip`. If you used a different filename, substitute it in the download and extraction commands.
 
 ### 3. Run Inference
 
@@ -86,7 +86,7 @@ verselens/
 └── README.md
 ```
 
-The exported model files are downloaded from the [VerseLens Hugging Face repository](https://huggingface.co/pranav-326/verselens-v1), rather than stored in the Git repository.
+The export model files are downloaded from the [VerseLens Hugging Face repository](https://huggingface.co/pranav-326/verselens-v1), rather than stored in the Git repository.
 
 ## Model Architecture
 
