@@ -19,6 +19,7 @@ env/
 verselens_export/
 verselens_export.zip
 verselens_qwen2_5_1_5b_interpreter_adapter/
+verselens_qwen3_interpreter_adapter
 
 # ── OS ───────────────────────────────────────────────────────────────────────
 .DS_Store

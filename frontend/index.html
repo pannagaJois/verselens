@@ -1,0 +1,784 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link class="" href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Doppio+One&amp;family=Indie+Flower&amp;display=swap" rel="stylesheet"><style>
+  .indie-flower-regular, body, h1, h2, h3, h4, p, span:not(.material-symbols-outlined), button:not(.material-symbols-outlined), input, textarea, a { 
+    font-family: 'Indie Flower', cursive !important; 
+  }
+  .material-symbols-outlined { 
+    font-family: 'Material Symbols Outlined' !important; 
+    font-display: block; 
+    font-style: normal; 
+    font-weight: normal; 
+    line-height: 1; 
+    text-transform: none; 
+    letter-spacing: normal; 
+    word-wrap: normal; 
+    white-space: nowrap; 
+    direction: ltr; 
+    -webkit-font-smoothing: antialiased; 
+    display: inline-block;
+  }
+</style><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}#tab-panel-interpretation > article{max-height:70vh;overflow-y:auto;scrollbar-color:#8C5845 #F3EDE7;scrollbar-width:thin;}#tab-panel-interpretation > article::-webkit-scrollbar{display:block;width:12px;}#tab-panel-interpretation > article::-webkit-scrollbar-track{background:#F3EDE7;border-radius:999px;}#tab-panel-interpretation > article::-webkit-scrollbar-thumb{background:#8C5845;border:3px solid #F3EDE7;border-radius:999px;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"tertiary-fixed-dim": "#c1c5e4", secondary: "#665e4c", "paper-elevated": "#FFFFFF", "surface-container-highest": "#e7e1dc", outline: "#7d766a", "surface-variant": "#e7e1dc", tertiary: "#13182f", "ink-primary": "#1C1C1A", "on-tertiary": "#ffffff", "on-background": "#1d1b18", "inverse-primary": "#d9c597", error: "#ba1a1a", "surface-tint": "#6c5d37", "accent-olive-subtle": "#EEF1EC", "primary-fixed": "#f6e0b1", "on-error": "#ffffff", "surface-bright": "#fef8f3", "rule-border": "#DCD5C5", "on-tertiary-container": "#9094b1", "accent-terracotta-subtle": "#F6ECE8", "on-primary": "#ffffff", "surface-container-high": "#ede7e2", "surface-container-lowest": "#ffffff", "tertiary-fixed": "#dde1ff", "on-tertiary-fixed-variant": "#41455f", "outline-variant": "#cec5b7", "on-primary-container": "#a6946a", "secondary-container": "#eee1ca", "secondary-fixed-dim": "#d1c5af", "inverse-on-surface": "#f6f0ea", "primary-container": "#392d0c", "surface-container": "#f3ede7", "on-secondary-fixed": "#211b0d", "secondary-fixed": "#eee1ca", "accent-teal-subtle": "#E5EEEE", "on-tertiary-fixed": "#151a31", "on-secondary": "#ffffff", "meter-iamb": "#1E4B4C", "on-surface-variant": "#4b463c", "tertiary-container": "#282d45", background: "#fef8f3", "meter-trochee": "#8C5845", "ink-secondary": "#48463F", "surface-container-low": "#f9f3ed", "surface-dim": "#dfd9d4", surface: "#fef8f3", "inverse-surface": "#32302c", "ink-muted": "#7B776E", "on-secondary-fixed-variant": "#4e4635", "primary-fixed-dim": "#d9c597", "paper-surface": "#FAF7F0", "error-container": "#ffdad6", "on-primary-fixed": "#241a00", "highlight-pencil": "#EED888", "meter-dactyl": "#58674E", "on-surface": "#1d1b18", "canvas-aged": "#ECE5D8", "on-primary-fixed-variant": "#534522", "on-error-container": "#93000a", primary: "#221800", "on-secondary-container": "#6c6351"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {gutter: "1.5rem", "gutter-compact": "1rem", "space-lg": "1.5rem", "space-sm": "0.5rem", "space-xl": "2.5rem", "space-xs": "0.25rem", margin: "2.5rem", "space-md": "1rem", "margin-mobile": "1rem"}, fontFamily: {"label-lg": ["Plus Jakarta Sans"], "display-md": ["\"Source Serif 4\""], "body-md": ["\"Source Serif 4\""], "label-md": ["Plus Jakarta Sans"], "poem-verse": ["\"Source Serif 4\""], "headline-lg-mobile": ["\"Source Serif 4\""], "body-lg": ["\"Source Serif 4\""], "headline-md": ["\"Source Serif 4\""], "label-sm": ["Plus Jakarta Sans"], "display-lg": ["\"Source Serif 4\""], marginalia: ["\"Source Serif 4\""], "headline-lg": ["\"Source Serif 4\""], "code-scansion": ["Plus Jakarta Sans"], headline: ["\"Source Serif 4\""], display: ["\"Source Serif 4\""], body: ["\"Source Serif 4\""], label: ["Plus Jakarta Sans"]}, fontSize: {"label-lg": ["14px", {lineHeight: "20px", letterSpacing: "0.02em", fontWeight: "600"}], "display-md": ["36px", {lineHeight: "46px", letterSpacing: "-0.015em", fontWeight: "400"}], "body-md": ["15px", {lineHeight: "24px", fontWeight: "400"}], "label-md": ["12px", {lineHeight: "16px", letterSpacing: "0.03em", fontWeight: "500"}], "poem-verse": ["19px", {lineHeight: "34px", letterSpacing: "0.01em", fontWeight: "400"}], "headline-lg-mobile": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "500"}], "body-lg": ["17px", {lineHeight: "28px", fontWeight: "400"}], "headline-md": ["22px", {lineHeight: "30px", fontWeight: "500"}], "label-sm": ["11px", {lineHeight: "14px", letterSpacing: "0.05em", fontWeight: "600"}], "display-lg": ["44px", {lineHeight: "54px", letterSpacing: "-0.02em", fontWeight: "400"}], marginalia: ["13px", {lineHeight: "20px", fontWeight: "400"}], "headline-lg": ["28px", {lineHeight: "36px", letterSpacing: "-0.01em", fontWeight: "500"}], "code-scansion": ["12px", {lineHeight: "16px", letterSpacing: "0.1em", fontWeight: "500"}]}}}};</script></head><body class="bg-canvas-aged text-on-surface antialiased min-h-screen"><div aria-hidden="true" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"><div class="absolute inset-0 bg-cover bg-center" style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCDnmbwYctSHiw2k6Ogkdy4-Hf8-8XsiQEmoXyB4QHu6rvazw2yijY4WXp-R5Ej1c7ZuIyVmoY_QIFv-IG1Ne69nqUcNE7vPOJxx1HT90rlX-1-xNms0NWF9n2MucmH8Fk9NbcVoLpz5Cu5TJXCCUvUiMASECIpCl7LYzqbbfQ11O1CUjdK979FoWuFHD-8elU-6g_sXxqxPNy6CMMjz-WXb6rxmec2q7oOd4XWYmpCfTmV2Rt5Ogu-sA&quot;); filter: contrast(1.05) brightness(0.95); opacity: 0.85;"></div><div class="absolute inset-0 bg-gradient-to-b from-[#221800]/20 via-canvas-aged/40 to-canvas-aged/80 pointer-events-none"></div></div><header class="fixed top-0 left-0 right-0 z-50 bg-transparent py-4"><div class="max-w-7xl mx-auto px-space-lg flex items-center justify-between"><a class="flex items-center gap-space-sm group drop-shadow-sm" href="#"><div class="flex flex-col"><span class="text-2xl font-bold tracking-tight drop-shadow-sm" style="color: rgb(252, 248, 242);">VerseLens</span><span class="text-sm -mt-1 tracking-wider uppercase drop-shadow-xs" style="color: rgb(232, 226, 216);">Poetics Laboratory</span></div></a><div class="flex items-center gap-space-sm"><span class="px-3 py-1 rounded-full bg-paper-surface/75 backdrop-blur-md text-ink-secondary text-sm shadow-xs border border-rule-border/40">A quiet place for poetry close reading</span></div></div></header><main class="relative z-10 w-full pt-16 bg-transparent"><div class="flex flex-col w-full">
+<!-- Desk Workspace Shell -->
+<div class="w-full max-w-7xl mx-auto px-space-md sm:px-space-lg py-space-md">
+<!-- MAIN 2-COLUMN DESK SPLIT -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT PANEL: "Your Poem" (~45% / 5 cols) -->
+<section class="lg:col-span-5 flex flex-col gap-space-md">
+<!-- Poem Sheet Card (Tactile Paper) -->
+<div class="relative bg-paper-surface/85 backdrop-blur-md rounded-xl shadow-lg border border-white/60 p-space-lg">
+<!-- Masking tape decoration on top edge -->
+<div class="absolute -top-2 left-1/2 -translate-x-1/2 w-20 h-4 bg-surface-container-highest/80 backdrop-blur-sm shadow-xs rounded-[1px] rotate-1 z-10 pointer-events-none"></div>
+<!-- Section Heading -->
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary align-middle">edit_note</span>
+<h2 class="font-headline-md text-headline-md font-medium text-ink-primary">Your poem</h2>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-accent-teal-subtle text-primary">
+              Corpus: Pastoral
+            </span>
+</div>
+<!-- Form Fields: Title & Poet -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm mb-space-md">
+<div>
+<label class="block font-label-sm text-label-sm text-ink-muted mb-1 uppercase tracking-wider" for="poem-title">Title (optional)</label>
+<input class="w-full bg-surface-container-low px-3 py-1.5 rounded-md font-body-md text-body-md text-ink-primary placeholder:text-ink-muted/50 focus:outline-none focus:bg-paper-elevated transition-colors shadow-2xs" id="poem-title" placeholder="e.g. The Peace of Wild Things" type="text" value="">
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-ink-muted mb-1 uppercase tracking-wider" for="poem-poet">Poet (optional)</label>
+<input class="w-full bg-surface-container-low px-3 py-1.5 rounded-md font-body-md text-body-md text-ink-primary placeholder:text-ink-muted/50 focus:outline-none focus:bg-paper-elevated transition-colors shadow-2xs" id="poem-poet" placeholder="e.g. Wendell Berry" type="text" value="">
+</div>
+</div>
+<!-- Verse Textarea / Reader Surface -->
+<div class="relative rounded-md bg-paper-elevated shadow-inner p-space-md mb-space-sm">
+<!-- Line numbers overlay simulation -->
+<div class="flex gap-space-md">
+<div class="select-none text-right font-code-scansion text-ink-muted/40 space-y-[10px] pt-1 text-label-sm"><span class="">01</span><br><span class="">02</span><br><span class="">03</span><br><span class="">04</span><br><span class="">05</span></div>
+<textarea class="w-full resize-none bg-transparent font-poem-verse text-ink-primary focus:outline-none leading-relaxed tracking-wide selection:bg-highlight-pencil/40 text-sm" id="poem-content" placeholder="Paste or type a poem here to begin close reading..." rows="12" spellcheck="false"></textarea>
+</div>
+</div>
+<!-- Metadata Counters -->
+<div class="flex items-center justify-between py-1 px-1 mb-space-md">
+<div class="flex items-center gap-space-md text-ink-muted font-label-md text-label-md">
+<span class="inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[17px] text-ink-muted align-middle">short_text</span>
+<span class="" id="word-count-display">word count: 0 words</span>
+</span>
+<span class="inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[17px] text-ink-muted align-middle">format_list_numbered</span>
+<span class="" id="line-count-display">Lines: 0 lines</span>
+</span>
+</div>
+<span class="font-marginalia text-marginalia text-ink-muted italic hidden sm:inline">Awaiting meter &amp; verse</span>
+</div>
+<!-- Action Bar: 3 Main Controls -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs"><div class="flex items-center gap-space-sm"><button class="inline-flex items-center gap-2 px-space-lg py-2 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg shadow-2xs transition-colors" id="analyze-button" onclick="analyzePoem()" type="button"><span class="material-symbols-outlined text-[18px] align-middle">auto_stories</span><span class="">Analyze poem</span></button><button class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-ink-muted font-label-md text-label-md transition-colors opacity-60 cursor-not-allowed" disabled="disabled" id="clear-button" onclick="clearPoemInput()" type="button"><span class="material-symbols-outlined text-[16px] align-middle">backspace</span><span class="">Clear</span></button></div><button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent-olive-subtle hover:bg-surface-container text-ink-primary font-label-md text-label-md font-medium border border-outline-variant shadow-xs transition-all" onclick="loadDickinsonExample()" type="button"><span class="material-symbols-outlined text-[16px] text-tertiary align-middle">auto_awesome</span><span class="">Try an example poem</span><span class="material-symbols-outlined text-[15px] text-ink-muted align-middle">arrow_forward</span></button></div>
+</div>
+<!-- Tactile Archival Postcard Note (Field Notes aesthetic inspired) -->
+<div class="relative bg-paper-surface/80 backdrop-blur-md rounded-xl p-space-md shadow-md border border-white/40 rotate-[-0.3deg]">
+<div class="flex items-start gap-space-md">
+<div class="w-16 h-16 shrink-0 rounded-md overflow-hidden shadow-2xs">
+<img class="w-full h-full object-cover" data-alt="Close-up macro photograph of antique laid paper, watermarked texture, fountain pen nib resting on ink-stained manuscript ledger, natural diffused daylight, warm sepia tones, calm quiet academic atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-Lzr_XHwD7Urf__GDZV2xZmsqFgDZyBDxumJn0OrViOyXp7PoX50qzogGrzZrGzEYGnFLRb1akPaozhXZHwl7t96llm_gxHQxeitGeLBHh3FOhL9-Mi5UYuPVtdpsCRk1dSXUU4bj4AbchBId9yT3ZRmdEp6SwhgSNtF3TqE3hBBy0dsFHMyTwwqQV4bugxZWLfvjIlDq0l9gO2qtKhfuEXMgkXGYV825LyduifgC">
+</div>
+<div class="min-w-0 flex-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">Scholar's Field Guide</span>
+<p class="font-marginalia text-marginalia text-ink-secondary mt-0.5 line-clamp-2">
+                "Berry contrasts temporal parental dread with timeless animal serenity — observe how line length elongates upon entering the marsh."
+              </p>
+</div>
+</div>
+</div>
+</section>
+<!-- RIGHT PANEL: "Analysis" (~55% / 7 cols) -->
+<section class="lg:col-span-7 flex flex-col gap-space-md min-w-0">
+<!-- ================= STATE CONTAINER 1: FULL ANALYSIS ================= -->
+<div class="flex flex-col gap-space-md hidden" id="state-analysis-container">
+<!-- Tab Navigation Bar -->
+<div class="flex items-center justify-between bg-paper-surface p-1 rounded-lg shadow-sm">
+<nav aria-label="Analysis Perspectives" class="flex items-center gap-1">
+<button class="px-space-md py-1.5 rounded-md font-label-md text-label-md font-medium transition-all bg-primary-container text-on-primary shadow-xs" id="tab-btn-interpretation" onclick="switchAnalysisTab('interpretation')" type="button">
+                Interpretation
+              </button>
+<button class="px-space-md py-1.5 rounded-md font-label-md text-label-md font-medium transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-container" id="tab-btn-themes" onclick="switchAnalysisTab('themes')" type="button">
+                Themes and emotions
+              </button>
+<button class="hidden px-space-md py-1.5 rounded-md font-label-md text-label-md font-medium transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-container" id="tab-btn-evidence" onclick="switchAnalysisTab('evidence')" type="button">
+                Word evidence
+              </button>
+</nav>
+<span class="hidden sm:flex items-center gap-1 font-marginalia text-marginalia text-ink-muted pr-2">
+<span class="material-symbols-outlined text-[15px] align-middle">psychology_alt</span>
+              Model v2.4 (Humanities)
+            </span>
+</div>
+<!-- TAB CONTENT 1: INTERPRETATION (DEFAULT) -->
+<div class="flex flex-col gap-space-md" id="tab-panel-interpretation">
+<!-- Summary Header Chips -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-teal-subtle text-primary shadow-2xs">
+<span class="material-symbols-outlined text-[15px] align-middle">park</span>
+<span class="font-label-sm text-label-sm font-semibold">Theme: Solitude &amp; Natural Sanctuary</span>
+</div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-olive-subtle text-tertiary shadow-2xs">
+<span class="material-symbols-outlined text-[15px] align-middle">spa</span>
+<span class="font-label-sm text-label-sm font-semibold">Emotion: Quietude &amp; Contentment 88%</span>
+</div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-terracotta-subtle text-secondary shadow-2xs">
+<span class="material-symbols-outlined text-[15px] align-middle">wb_twilight</span>
+<span class="font-label-sm text-label-sm font-semibold">Arc: Anxiety → Release</span>
+</div>
+</div>
+<!-- Reading Essay Card -->
+<article class="relative bg-paper-surface rounded-lg shadow-sm p-space-xl">
+<!-- Corner bookmark detail -->
+<div class="absolute top-0 right-8 w-6 h-8 bg-surface-container-high rounded-b-sm shadow-inner flex items-center justify-center">
+<span class="material-symbols-outlined text-[13px] text-ink-muted align-middle">bookmark</span>
+</div>
+<div class="flex items-center gap-2 text-ink-muted font-label-sm text-label-sm uppercase tracking-wider mb-space-sm">
+<span class="">Critical Reading</span>
+<span class="">•</span>
+<span class="">Synthesized Inquiry</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-ink-primary font-medium tracking-tight mb-space-md" id="interpretation-title">
+                The Sanctuary of Non-Human Presence
+              </h3>
+<div class="space-y-space-md font-body-lg text-body-lg text-ink-secondary leading-[1.85]" id="interpretation-body">
+<p class="">
+                  Wendell Berry opens with an interior psychological crisis—a nocturnal waking prompted by <em class="text-ink-primary font-normal">“despair for the world”</em> and paternal anxiety regarding his children’s destiny. The first movement builds rapid tension through run-on clause accumulation, capturing the modern mind trapped within cyclical anticipation of calamity.
+                </p>
+<p class="">
+                  The poem’s turning point occurs with geographical and physical motion: <em class="text-ink-primary font-normal">“I go and lie down where the wood drake / rests in his beauty on the water.”</em> Berry does not merely seek refuge in landscape as an abstract scenic relief; he seeks communion with creatures that exist outside the human curse of temporal forethought. The wild creatures do not calculate grief before its arrival. Their stillness confers permission for the speaker to shed his cognitive burden.
+                </p>
+<p class="">
+                  In the final couplet, Berry introduces the paradox of <em class="text-ink-primary font-normal">“day-blind stars / waiting with their light.”</em> The cosmic permanence of the stars—invisible yet unwavering—mirrors the enduring, silent grace of the ecology itself. Release does not arrive through resolution of the world’s crises, but through immersion in the unhurried present of the natural order.
+                </p>
+</div>
+<!-- Essay Card Footer Meta & Controls -->
+<div class="mt-space-lg pt-space-md flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-low rounded-md px-space-md py-space-sm">
+<div class="flex items-center gap-space-sm">
+<button class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-paper-surface text-ink-secondary hover:text-ink-primary text-label-sm font-label-sm shadow-2xs transition-colors" onclick="notifyCopied(this)" type="button">
+<span class="material-symbols-outlined text-[15px] align-middle">content_copy</span>
+<span class="">Copy</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-paper-surface text-ink-secondary hover:text-ink-primary text-label-sm font-label-sm shadow-2xs transition-colors" onclick="runAnalyzeAnimation()" type="button">
+<span class="material-symbols-outlined text-[15px] align-middle">refresh</span>
+<span class="">Regenerate</span>
+</button>
+</div>
+<span class="font-label-sm text-label-sm text-ink-muted" id="generation-meta">
+                  Generated in 21s · 408 words
+                </span>
+</div>
+</article>
+<!-- Machine Disclaimer -->
+<p class="font-marginalia text-marginalia text-ink-muted text-center italic">
+              This analysis is generated by an AI model and may contain mistakes · Cross-verify textual nuances against primary editions.
+            </p>
+</div>
+<!-- TAB CONTENT 2: THEMES AND EMOTIONS -->
+<div class="hidden flex flex-col gap-space-md" id="tab-panel-themes">
+<div class="bg-paper-surface rounded-lg shadow-sm p-space-lg">
+<div class="flex items-baseline justify-between mb-space-md">
+<div>
+<h3 class="font-headline-md text-headline-md text-ink-primary">Thematic &amp; Emotional Valence</h3>
+<p class="font-marginalia text-marginalia text-ink-muted italic mt-0.5">Model estimates, not facts — calculated over line distribution</p>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container text-ink-muted">Confidence: 0.94</span>
+</div>
+<!-- Section 1: Themes -->
+<div class="mb-space-lg">
+<span class="block font-label-sm text-label-sm uppercase tracking-wider text-ink-primary font-semibold mb-space-sm">
+                  Thematic Concentrations
+                </span>
+<div class="space-y-space-md">
+<!-- Theme Bar 1 -->
+<div>
+<div class="flex justify-between font-label-md text-label-md mb-1">
+<span class="text-ink-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary align-middle">forest</span>
+                        Nature &amp; Sanctuary
+                      </span>
+<span class="text-ink-primary font-semibold">92%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 92%"></div>
+</div>
+<span class="block font-marginalia text-marginalia text-ink-muted mt-1">Lines 4–8: Drake, heron, water, untaxed wild creatures</span>
+</div>
+<!-- Theme Bar 2 -->
+<div>
+<div class="flex justify-between font-label-md text-label-md mb-1">
+<span class="text-ink-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary align-middle">night_shelter</span>
+                        Solitude &amp; Retreat
+                      </span>
+<span class="text-ink-primary font-semibold">84%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 84%"></div>
+</div>
+<span class="block font-marginalia text-marginalia text-ink-muted mt-1">Lines 4, 8: Solitary physical movement into nocturnal marsh</span>
+</div>
+<!-- Theme Bar 3 -->
+<div>
+<div class="flex justify-between font-label-md text-label-md mb-1">
+<span class="text-ink-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary align-middle">hourglass_empty</span>
+                        Mortality &amp; Parental Dread
+                      </span>
+<span class="text-ink-primary font-semibold">68%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 68%"></div>
+</div>
+<span class="block font-marginalia text-marginalia text-ink-muted mt-1">Lines 1–3: Despair for children's future, least nighttime noise</span>
+</div>
+<!-- Theme Bar 4 -->
+<div>
+<div class="flex justify-between font-label-md text-label-md mb-1">
+<span class="text-ink-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary align-middle">lightbulb</span>
+                        Cosmic Grace &amp; Transcendence
+                      </span>
+<span class="text-ink-primary font-semibold">58%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 58%"></div>
+</div>
+<span class="block font-marginalia text-marginalia text-ink-muted mt-1">Lines 9–11: Day-blind stars, resting in the grace of the world</span>
+</div>
+</div>
+</div>
+<!-- Section 2: Emotions -->
+<div>
+<span class="block font-label-sm text-label-sm uppercase tracking-wider text-ink-primary font-semibold mb-space-sm">
+                  Emotional Tone Trajectory
+                </span>
+<div class="space-y-space-md">
+<!-- Emotion Bar 1 -->
+<div>
+<div class="flex justify-between font-label-md text-label-md mb-1">
+<span class="text-ink-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-tertiary align-middle">sentiment_satisfied</span>
+                        Serenity &amp; Relief
+                      </span>
+<span class="text-ink-primary font-semibold">89%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 89%"></div>
+</div>
+</div>
+<!-- Emotion Bar 2 -->
+<div>
+<div class="flex justify-between font-label-md text-label-md mb-1">
+<span class="text-ink-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-secondary align-middle">sentiment_neutral</span>
+                        Melancholy / Despair (Opening)
+                      </span>
+<span class="text-ink-primary font-semibold">62%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 62%"></div>
+</div>
+</div>
+<!-- Emotion Bar 3 -->
+<div>
+<div class="flex justify-between font-label-md text-label-md mb-1">
+<span class="text-ink-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary align-middle">visibility</span>
+                        Awe of the Non-Human
+                      </span>
+<span class="text-ink-primary font-semibold">54%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 54%"></div>
+</div>
+</div>
+<!-- Emotion Bar 4 -->
+<div>
+<div class="flex justify-between font-label-md text-label-md mb-1">
+<span class="text-ink-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-ink-muted align-middle">alarm</span>
+                        Existential Anxiety
+                      </span>
+<span class="text-ink-primary font-semibold">41%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 41%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Cadence Sparkline Visual -->
+<div class="mt-space-lg pt-space-md bg-surface-container-low p-space-md rounded-md">
+<span class="block font-label-sm text-label-sm text-ink-muted mb-2">Tonal Transition Vector (Line 1 to 11):</span>
+<svg class="w-full h-12 text-primary" fill="none" viewBox="0 0 400 48">
+<path d="M0,40 C60,42 90,36 140,24 C190,12 250,18 320,8 C360,4 380,6 400,6" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="0" cy="40" fill="#84523f" r="3"></circle>
+<circle cx="140" cy="24" fill="#1e4b4c" r="3"></circle>
+<circle cx="400" cy="6" fill="#24321c" r="3.5"></circle>
+</svg>
+<div class="flex justify-between font-marginalia text-marginalia text-ink-muted mt-1">
+<span class="">Line 1: High Dread</span>
+<span class="">Line 5: Waterside Entrance</span>
+<span class="">Line 11: Emancipation</span>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB CONTENT 3: WORD EVIDENCE -->
+<div class="hidden flex flex-col gap-space-md" id="tab-panel-evidence">
+<div class="bg-paper-surface rounded-lg shadow-sm p-space-lg">
+<!-- Top Selector & Filter Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-md pb-space-sm">
+<div>
+<label class="block font-label-sm text-label-sm text-ink-muted mb-1 uppercase tracking-wider" for="evidence-filter-select">Highlight Evidence For:</label>
+<select class="bg-surface-container-low px-3 py-1.5 rounded font-label-md text-label-md text-ink-primary font-medium focus:outline-none shadow-2xs" id="evidence-filter-select" onchange="updateEvidenceFilter(this.value)">
+<option selected="" value="nature">Nature &amp; Sanctuary (Selected)</option>
+<option value="serenity">Serenity &amp; Relief</option>
+<option value="mortality">Mortality &amp; Fear</option>
+</select>
+</div>
+<!-- Legend Chips -->
+<div class="flex items-center gap-space-sm pt-2 sm:pt-0">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-accent-teal-subtle text-primary font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                    Strong Evidence
+                  </span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container text-ink-muted font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+                    Ambient Context
+                  </span>
+</div>
+</div>
+<!-- Interactive Flowing Text Container -->
+<div class="bg-paper-elevated p-space-lg rounded-md shadow-inner">
+<div class="font-poem-verse text-poem-verse leading-loose text-ink-primary space-y-2" id="annotated-verse-stream">
+<p class="">When despair for the world grows in me</p>
+<p class="">and I wake in the night at the least sound</p>
+<p class="">in fear of what my life and my children’s lives may be,</p>
+<p class="">
+                    I go and lie down where the 
+                    <mark class="bg-accent-teal-subtle text-primary px-1.5 py-0.5 rounded font-medium cursor-pointer hover:bg-highlight-pencil/60 transition-colors" title="Key fauna marker: Wood duck">wood drake</mark>
+</p>
+<p class="">
+                    rests in his 
+                    <mark class="bg-accent-teal-subtle text-primary px-1.5 py-0.5 rounded font-medium cursor-pointer hover:bg-highlight-pencil/60 transition-colors" title="Non-human aesthetic harmony">beauty</mark>
+                    on the 
+                    <mark class="bg-accent-teal-subtle text-primary px-1.5 py-0.5 rounded font-medium cursor-pointer hover:bg-highlight-pencil/60 transition-colors" title="Aquatic refuge motif">water</mark>, 
+                    and the great 
+                    <mark class="bg-accent-teal-subtle text-primary px-1.5 py-0.5 rounded font-medium cursor-pointer hover:bg-highlight-pencil/60 transition-colors" title="Wading bird; embodiment of patient presence">heron</mark> 
+                    feeds.
+                  </p>
+<p class="">
+                    I come into the 
+                    <mark class="bg-accent-teal-subtle text-primary px-1.5 py-0.5 rounded font-medium cursor-pointer hover:bg-highlight-pencil/60 transition-colors" title="Core conceptual sanctuary">peace of wild things</mark>
+</p>
+<p class="">
+                    who do not tax their lives with forethought
+                  </p>
+<p class="">
+                    of grief. I come into the presence of 
+                    <mark class="bg-accent-teal-subtle text-primary px-1.5 py-0.5 rounded font-medium cursor-pointer hover:bg-highlight-pencil/60 transition-colors" title="Reflective, unagitated state">still water</mark>.
+                  </p>
+<p class="">
+                    And I feel above me the 
+                    <mark class="bg-accent-teal-subtle text-primary px-1.5 py-0.5 rounded font-medium cursor-pointer hover:bg-highlight-pencil/60 transition-colors" title="Stars shining in daylight; latent enduring comfort">day-blind stars</mark>
+</p>
+<p class="">waiting with their light. For a time</p>
+<p class="">
+                    I rest in the 
+                    <mark class="bg-accent-teal-subtle text-primary px-1.5 py-0.5 rounded font-medium cursor-pointer hover:bg-highlight-pencil/60 transition-colors" title="Unearned ecologic reconciliation">grace of the world</mark>, 
+                    and am free.
+                  </p>
+</div>
+</div>
+<!-- Interactive Annotation Drawer Callout -->
+<div class="mt-space-md p-space-md rounded-md bg-accent-teal-subtle flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-[18px] text-primary shrink-0 mt-0.5 align-middle">info</span>
+<div class="font-marginalia text-marginalia text-ink-primary">
+<span class="font-semibold text-primary">Textual concordance insight:</span> 
+                  The recurrence of water imagery (<span class="italic">“water”</span>, <span class="italic">“still water”</span>, <span class="italic">“heron”</span>, <span class="italic">“drake”</span>) establishes an elemental baptismal sanctuary where grief cannot take linguistic root.
+                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- ================= STATE CONTAINER 2: LOADING FLOW (PULSING) ================= -->
+<div class="hidden flex flex-col gap-space-md" id="state-loading-container">
+<div class="bg-paper-surface rounded-lg shadow-sm p-space-xl text-center">
+<div class="w-12 h-12 mx-auto mb-space-md rounded-full bg-accent-teal-subtle flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px] animate-spin align-middle">cyclone</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-ink-primary font-medium mb-1" id="loading-title">
+              Analyzing Poetic Matrix
+            </h3>
+<p class="font-marginalia text-marginalia text-ink-muted italic mb-space-lg" id="loading-message">
+              Scanning metrical feet, tonal contours, and lexicon roots...
+            </p>
+<!-- Loading Step Milestones -->
+<div class="max-w-md mx-auto text-left space-y-space-sm mb-space-lg">
+<div class="flex items-center justify-between p-2.5 rounded bg-surface-container">
+<div class="flex items-center gap-2 font-label-md text-label-md text-ink-primary">
+<span class="material-symbols-outlined text-[18px] text-tertiary align-middle">check_circle</span>
+<span class="">1. Verse parsing &amp; stanza segmentation</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold">Done</span>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded bg-surface-container">
+<div class="flex items-center gap-2 font-label-md text-label-md text-ink-primary">
+<span class="material-symbols-outlined text-[18px] text-tertiary align-middle">check_circle</span>
+<span class="">2. Prosodic scansion &amp; cadence detection</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold">Done</span>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded bg-accent-teal-subtle">
+<div class="flex items-center gap-2 font-label-md text-label-md text-primary">
+<span class="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin inline-block"></span>
+<span class="">3. Writing close-reading interpretation...</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-semibold animate-pulse">Running</span>
+</div>
+</div>
+<!-- Skeleton wash bars -->
+<div class="max-w-md mx-auto space-y-2 opacity-60">
+<div class="h-3 bg-surface-container-high rounded animate-pulse w-5/6 mx-auto"></div>
+<div class="h-3 bg-surface-container-high rounded animate-pulse w-full"></div>
+<div class="h-3 bg-surface-container-high rounded animate-pulse w-4/6 mx-auto"></div>
+</div>
+</div>
+</div>
+<!-- ================= STATE CONTAINER 3: EMPTY PAGE (FIELD NOTEBOOK) ================= -->
+<div class="flex flex-col gap-space-md" id="state-empty-container">
+<div class="flex flex-col gap-space-md"><div class="flex items-center justify-between bg-paper-surface p-1 rounded-lg shadow-sm"><nav aria-label="Analysis Perspectives" class="flex items-center gap-1"><button class="px-space-md py-1.5 rounded-md font-label-md text-label-md font-medium transition-all text-on-surface-variant bg-surface-container-low" disabled="disabled" type="button">Interpretation</button><button class="px-space-md py-1.5 rounded-md font-label-md text-label-md font-medium transition-all text-ink-muted" disabled="disabled" type="button">Themes and emotions</button><button class="px-space-md py-1.5 rounded-md font-label-md text-label-md font-medium transition-all text-ink-muted" disabled="disabled" type="button">Word evidence</button></nav><span class="hidden sm:flex items-center gap-1.5 font-marginalia text-marginalia text-ink-muted pr-2"><span class="material-symbols-outlined text-[16px] text-ink-muted align-middle">psychology_alt</span><span class="">Awaiting verses</span></span></div><div class="relative bg-paper-surface/85 backdrop-blur-md rounded-xl shadow-lg border border-white/60 p-space-xl text-center overflow-hidden"><div class="absolute -top-1 right-12 w-28 h-5 bg-highlight-pencil/40 backdrop-blur-xs -rotate-2 rounded-xs pointer-events-none"></div><div class="max-w-md mx-auto py-space-xl"><span class="font-label-sm text-label-sm uppercase tracking-widest text-ink-muted font-semibold">Blank Folio · Workspace Ready</span><h3 class="font-headline-lg text-headline-lg text-ink-primary font-medium mt-1 mb-space-xs">Paste a poem to begin</h3><p class="font-body-md text-body-md text-ink-secondary leading-relaxed mb-space-lg">Enter your verses on the left or select an example poem to explore thematic arcs, sentiment movement, and textual evidence.</p><div class="flex flex-col items-center gap-space-sm"><button class="inline-flex items-center gap-2 px-space-lg py-2.5 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md shadow-sm hover:shadow transition-all" onclick="loadDickinsonExample()" type="button"><span class="material-symbols-outlined text-[18px] text-on-primary align-middle">menu_book</span><span class="">Load Emily Dickinson Example</span></button><span class="font-marginalia text-marginalia text-ink-muted italic">“Hope” is the thing with feathers (12 lines · Ballad meter)</span></div></div><div class="border-t border-rule-border/40 pt-space-md flex flex-wrap items-center justify-center gap-space-md text-ink-muted font-label-sm text-label-sm"><span class="">Supports Free Verse</span><span class="">•</span><span class="">Petrarchan / Shakespearean Sonnets</span><span class="">•</span><span class="">Ballad Meters</span></div></div></div>
+</div>
+</section>
+</div>
+</div>
+<!-- Inline Vanilla Script for Micro-Interactions and State Switching -->
+<script>
+    // State switcher function
+    function switchMainState(state) {
+      const containerAnalysis = document.getElementById('state-analysis-container');
+      const containerLoading = document.getElementById('state-loading-container');
+      const containerEmpty = document.getElementById('state-empty-container');
+
+      const btnAnalysis = document.getElementById('btn-state-analysis');
+      const btnLoading = document.getElementById('btn-state-loading');
+      const btnEmpty = document.getElementById('btn-state-empty');
+
+      const activeClass = 'bg-primary-container text-on-primary shadow-sm';
+      const inactiveClass = 'text-ink-secondary hover:text-ink-primary';
+
+      [btnAnalysis, btnLoading, btnEmpty].forEach(btn => {
+        if (btn) btn.className = 'px-2.5 py-1 rounded-full font-label-sm text-label-sm transition-all ' + inactiveClass;
+      });
+
+      containerAnalysis.classList.add('hidden');
+      containerLoading.classList.add('hidden');
+      containerEmpty.classList.add('hidden');
+
+      if (state === 'analysis') {
+        containerAnalysis.classList.remove('hidden');
+        if (btnAnalysis) btnAnalysis.className = 'px-2.5 py-1 rounded-full font-label-sm text-label-sm transition-all ' + activeClass;
+      } else if (state === 'loading') {
+        containerLoading.classList.remove('hidden');
+        if (btnLoading) btnLoading.className = 'px-2.5 py-1 rounded-full font-label-sm text-label-sm transition-all ' + activeClass;
+      } else if (state === 'empty') {
+        containerEmpty.classList.remove('hidden');
+        if (btnEmpty) btnEmpty.className = 'px-2.5 py-1 rounded-full font-label-sm text-label-sm transition-all ' + activeClass;
+      }
+    }
+
+    // Analysis Tab Switcher
+    function switchAnalysisTab(tab) {
+      const pInterpretation = document.getElementById('tab-panel-interpretation');
+      const pThemes = document.getElementById('tab-panel-themes');
+      const pEvidence = document.getElementById('tab-panel-evidence');
+
+      const bInterpretation = document.getElementById('tab-btn-interpretation');
+      const bThemes = document.getElementById('tab-btn-themes');
+      const bEvidence = document.getElementById('tab-btn-evidence');
+
+      const tabActiveClasses = ['bg-primary-container', 'text-on-primary', 'shadow-xs'];
+      const tabInactiveClasses = ['text-on-surface-variant', 'hover:text-on-surface', 'hover:bg-surface-container'];
+
+      [bInterpretation, bThemes, bEvidence].forEach(b => {
+        if (b) {
+          b.classList.remove(...tabActiveClasses);
+          b.classList.add(...tabInactiveClasses);
+        }
+      });
+
+      pInterpretation.classList.add('hidden');
+      pThemes.classList.add('hidden');
+      pEvidence.classList.add('hidden');
+
+      if (tab === 'interpretation') {
+        pInterpretation.classList.remove('hidden');
+        if (bInterpretation) {
+          bInterpretation.classList.remove(...tabInactiveClasses);
+          bInterpretation.classList.add(...tabActiveClasses);
+        }
+      } else if (tab === 'themes') {
+        pThemes.classList.remove('hidden');
+        if (bThemes) {
+          bThemes.classList.remove(...tabInactiveClasses);
+          bThemes.classList.add(...tabActiveClasses);
+        }
+      } else if (tab === 'evidence') {
+        pEvidence.classList.remove('hidden');
+        if (bEvidence) {
+          bEvidence.classList.remove(...tabInactiveClasses);
+          bEvidence.classList.add(...tabActiveClasses);
+        }
+      }
+    }
+
+    // Clear poem input textarea
+    function clearPoemInput() {
+      document.getElementById('poem-title').value = '';
+      document.getElementById('poem-poet').value = '';
+      const area = document.getElementById('poem-content');
+      area.value = '';
+      document.getElementById('word-count-display').innerText = 'word count: 0 words';
+      document.getElementById('line-count-display').innerText = 'Lines: 0 lines';
+      switchMainState('empty');
+    }
+
+    // Load alternative example
+    function loadDickinsonExample() {
+      document.getElementById('poem-title').value = '“Hope” is the thing with feathers';
+      document.getElementById('poem-poet').value = 'Emily Dickinson';
+      const text = `“Hope” is the thing with feathers -
+That perches in the soul -
+And sings the tune without the words -
+And never stops - at all -
+
+And sweetest - in the Gale - is heard -
+And sore must be the storm -
+That could abash the little Bird
+That kept so many warm -
+
+I’ve heard it in the chillest land -
+And on the strangest Sea -
+Yet - never - in Extremity,
+It asked a crumb - of me.`;
+      
+      const area = document.getElementById('poem-content');
+      area.value = text;
+      document.getElementById('word-count-display').innerText = 'word count: 78 words';
+      document.getElementById('line-count-display').innerText = 'Lines: 12 lines';
+      switchMainState('analysis');
+      switchAnalysisTab('interpretation');
+    }
+
+    // Simulate analysis run animation
+    function runAnalyzeAnimation() {
+      switchMainState('loading');
+      setTimeout(() => {
+        switchMainState('analysis');
+        switchAnalysisTab('interpretation');
+      }, 1200);
+    }
+
+    // Copy notification helper
+    function notifyCopied(btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<span class="material-symbols-outlined text-[15px] text-tertiary align-middle">check</span><span>Copied!</span>';
+      setTimeout(() => {
+        btn.innerHTML = orig;
+      }, 1600);
+    }
+
+    // Dynamic Word Count updater
+    const poemTextarea = document.getElementById('poem-content');
+    if (poemTextarea) {
+      poemTextarea.addEventListener('input', function() {
+        const text = this.value.trim();
+        const words = text ? text.split(/\s+/).length : 0;
+        const lines = text ? text.split('\n').length : 0;
+        document.getElementById('word-count-display').innerText = `word count: ${words} words`;
+        document.getElementById('line-count-display').innerText = `Lines: ${lines} lines`;
+      });
+    }
+
+    // Dropdown change for word evidence highlights
+    function updateEvidenceFilter(val) {
+      const marks = document.querySelectorAll('#annotated-verse-stream mark');
+      marks.forEach(m => {
+        if (val === 'mortality') {
+          m.className = 'bg-accent-terracotta-subtle text-secondary px-1.5 py-0.5 rounded font-medium cursor-pointer transition-colors';
+        } else if (val === 'serenity') {
+          m.className = 'bg-accent-olive-subtle text-tertiary px-1.5 py-0.5 rounded font-medium cursor-pointer transition-colors';
+        } else {
+          m.className = 'bg-accent-teal-subtle text-primary px-1.5 py-0.5 rounded font-medium cursor-pointer hover:bg-highlight-pencil/60 transition-colors';
+        }
+      });
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+  <script>
+    const examplePoem = `“Hope” is the thing with feathers -
+That perches in the soul -
+And sings the tune without the words -
+And never stops - at all -
+
+And sweetest - in the Gale - is heard -
+And sore must be the storm -
+That could abash the little Bird
+That kept so many warm -
+
+I’ve heard it in the chillest land -
+And on the strangest Sea -
+Yet - never - in Extremity,
+It asked a crumb - of me.`;
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function predictionBars(title, predictions, colorClass) {
+      const rows = predictions?.length
+        ? predictions.map(([label, score]) => {
+            const percent = Math.round(Number(score) * 100);
+            return `<div>
+              <div class="flex justify-between font-label-md text-label-md mb-1">
+                <span class="text-ink-primary font-medium">${escapeHtml(label)}</span>
+                <span class="text-ink-primary font-semibold">${percent}%</span>
+              </div>
+              <div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+                <div class="h-full ${colorClass} rounded-full" style="width: ${percent}%"></div>
+              </div>
+            </div>`;
+          }).join('')
+        : '<p class="font-marginalia text-marginalia text-ink-muted italic">No labels met the threshold.</p>';
+
+      return `<div class="mb-space-lg">
+        <span class="block font-label-sm text-label-sm uppercase tracking-wider text-ink-primary font-semibold mb-space-sm">${title}</span>
+        <div class="space-y-space-md">${rows}</div>
+      </div>`;
+    }
+
+    function renderPredictions(predictions) {
+      const panel = document.getElementById('tab-panel-themes');
+      panel.innerHTML = `<div class="bg-paper-surface rounded-lg shadow-sm p-space-lg">
+        <div class="flex items-baseline justify-between mb-space-md">
+          <div>
+            <h3 class="font-headline-md text-headline-md text-ink-primary">Thematic &amp; Emotional Valence</h3>
+            <p class="font-marginalia text-marginalia text-ink-muted italic mt-0.5">Model estimates, not facts</p>
+          </div>
+        </div>
+        ${predictionBars('Thematic concentrations', predictions.theme, 'bg-primary-container')}
+        ${predictionBars('Emotional tone', predictions.emotion, 'bg-tertiary-container')}
+      </div>`;
+    }
+
+    function renderInterpretation(result) {
+      document.getElementById('interpretation-title').textContent = 'Literary interpretation';
+      const html = marked.parse(result.interpretation || '');
+      document.getElementById('interpretation-body').innerHTML = DOMPurify.sanitize(html);
+      document.getElementById('generation-meta').textContent =
+        `Generated in ${Number(result.duration_seconds).toFixed(1)}s · ${result.word_count} words`;
+    }
+
+    function setLoadingStep(step) {
+      const title = document.getElementById('loading-title');
+      const message = document.getElementById('loading-message');
+      if (step === 'classifying') {
+        title.textContent = 'Classifying';
+        message.textContent = 'Reading themes and emotional signals…';
+      } else {
+        title.textContent = 'Writing interpretation';
+        message.textContent = 'The literary reading may take about 20–40 seconds…';
+      }
+    }
+
+    async function analyzePoem() {
+      const poem = document.getElementById('poem-content').value.trim();
+      const button = document.getElementById('analyze-button');
+      const clearButton = document.getElementById('clear-button');
+      if (!poem) {
+        alert('Please enter a poem before analyzing.');
+        return;
+      }
+
+      button.disabled = true;
+      clearButton.disabled = true;
+      button.classList.add('opacity-60', 'cursor-not-allowed');
+      setLoadingStep('classifying');
+      switchMainState('loading');
+
+      const request = {
+        poem,
+        title: document.getElementById('poem-title').value.trim(),
+        poet: document.getElementById('poem-poet').value.trim()
+      };
+
+      try {
+        setTimeout(() => setLoadingStep('writing'), 500);
+        const response = await fetch('/analyze', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(request)
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.detail || 'Analysis failed.');
+
+        renderInterpretation(result);
+        renderPredictions(result.predictions || {});
+        switchMainState('analysis');
+        switchAnalysisTab('interpretation');
+      } catch (error) {
+        switchMainState('empty');
+        alert(error.message || 'Analysis failed. Please try again.');
+      } finally {
+        button.disabled = false;
+        clearButton.disabled = false;
+        button.classList.remove('opacity-60', 'cursor-not-allowed');
+      }
+    }
+
+    function clearPoemInput() {
+      document.getElementById('poem-title').value = '';
+      document.getElementById('poem-poet').value = '';
+      document.getElementById('poem-content').value = '';
+      document.getElementById('word-count-display').textContent = 'word count: 0 words';
+      document.getElementById('line-count-display').textContent = 'Lines: 0 lines';
+      document.getElementById('clear-button').disabled = true;
+      document.getElementById('clear-button').classList.add('opacity-60', 'cursor-not-allowed');
+      switchMainState('empty');
+    }
+
+    function loadDickinsonExample() {
+      document.getElementById('poem-title').value = '“Hope” is the thing with feathers';
+      document.getElementById('poem-poet').value = 'Emily Dickinson';
+      document.getElementById('poem-content').value = examplePoem;
+      document.getElementById('poem-content').dispatchEvent(new Event('input'));
+      document.getElementById('clear-button').disabled = false;
+      document.getElementById('clear-button').classList.remove('opacity-60', 'cursor-not-allowed');
+      switchMainState('empty');
+    }
+
+    function runAnalyzeAnimation() {
+      analyzePoem();
+    }
+
+    document.getElementById('tab-btn-evidence').classList.add('hidden');
+    document.getElementById('tab-panel-evidence').classList.add('hidden');
+    document.getElementById('poem-content').addEventListener('input', function() {
+      const hasText = this.value.trim().length > 0;
+      const clearButton = document.getElementById('clear-button');
+      clearButton.disabled = !hasText;
+      clearButton.classList.toggle('opacity-60', !hasText);
+      clearButton.classList.toggle('cursor-not-allowed', !hasText);
+    });
+  </script>
+</div></main><footer class="w-full bg-transparent py-8 mt-6"><div class="max-w-7xl mx-auto px-space-lg flex flex-col sm:flex-row items-center justify-between gap-2 text-ink-primary font-medium drop-shadow-xs"><div class="text-sm text-ink-secondary">Read freely. Notice deeply.</div></div></footer>
+
+</body></html>

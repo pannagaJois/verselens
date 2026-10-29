@@ -7,8 +7,7 @@ capabilities:
   multi-label classifier.
 - **Emotion classification** with a second classification head in the exported
   checkpoint.
-- **Literary interpretation** with a Qwen2.5-1.5B-Instruct model and a local
-  PEFT/LoRA adapter.
+- **Literary interpretation** with the `Qwen/Qwen3-4B-Instruct-2507` model.
 
 The classifier also supports Integrated Gradients token attribution, so
 predictions can be inspected at the token level. The project is intended for
@@ -19,6 +18,7 @@ educational and research use, not for authoritative literary criticism.
 - [Repository layout](#repository-layout)
 - [Requirements](#requirements)
 - [Run the complete analysis](#run-the-complete-analysis)
+- [Run the web frontend](#run-the-web-frontend)
 - [Use the classifier from Python](#use-the-classifier-from-python)
 - [Use the literary interpreter from Python](#use-the-literary-interpreter-from-python)
 - [Train or export the classifier](#train-or-export-the-classifier)
@@ -32,20 +32,27 @@ educational and research use, not for authoritative literary criticism.
 ```text
 verselens/
 ├── datasets/                         # Cleaned CSV datasets used by notebooks
+├── api.py                            # FastAPI backend and static frontend server
+├── frontend/                         # Single-page VerseLens web interface
+│   ├── index.html                    # Stitch layout with inline API wiring
+│   └── reference.png                 # Frontend design reference
 ├── inference.py                      # Prediction and Integrated Gradients helpers
-├── interpreter.py                    # Qwen + PEFT literary interpretation
+├── interpreter.py                    # Qwen literary interpretation
 ├── model.py                          # DeBERTa architecture and checkpoint loader
 ├── run.ipynb                         # End-to-end classifier + interpretation demo
 ├── verselens_roberta.ipynb           # Classifier training and export notebook
 ├── verselens_export/                 # Local classifier export (downloaded/generated)
-├── verselens_qwen2_5_1_5b_interpreter_adapter/
-│                                     # Local Qwen LoRA adapter (downloaded/generated)
 └── README.md
 ```
 
 The two model directories are ignored by Git because they contain large model
 artifacts. They must be present locally before running the corresponding
 inference code.
+
+The web frontend is served by `api.py` from the same origin as the `/analyze`
+endpoint. It keeps the Stitch-designed layout and provides poem input, example
+loading, analysis progress, sanitized Markdown interpretation, theme/emotion
+score bars, generation timing, and word count.
 
 ## Requirements
 
@@ -67,10 +74,16 @@ pip install torch transformers sentencepiece numpy huggingface_hub \
     jupyter ipykernel
 ```
 
-For the Qwen interpreter, also install PEFT:
+For the local web frontend, also install FastAPI and Uvicorn:
 
 ```bash
-pip install peft accelerate
+pip install fastapi uvicorn
+```
+
+For the faster quantized Apple Silicon interpreter:
+
+```bash
+pip install mlx-lm
 ```
 
 Training additionally uses the packages imported by
@@ -106,17 +119,12 @@ verselens_export/
 └── tokenizer files
 ```
 
-### 2. Prepare the Qwen interpreter adapter
+### 2. Prepare the Qwen interpreter
 
-Place the trained adapter at the repository root with this exact name:
-
-```text
-verselens_qwen2_5_1_5b_interpreter_adapter/
-```
-
-It must contain the PEFT adapter weights and tokenizer files, including
-`adapter_config.json` and `adapter_model.safetensors`. The base model
-`Qwen/Qwen2.5-1.5B-Instruct` is downloaded by Transformers on first use.
+No local adapter is required for inference. The base model
+`Qwen/Qwen3-4B-Instruct-2507` and its tokenizer are downloaded by
+Transformers on first use. Ensure the machine has enough memory for a 4B
+parameter model.
 
 ### 3. Run the notebook
 
@@ -131,9 +139,41 @@ The notebook:
 
 1. classifies the supplied poem for themes and emotions;
 2. displays labels whose probability meets the configured threshold; and
-3. generates a text-grounded literary interpretation with the Qwen adapter.
+3. generates a text-grounded literary interpretation with Qwen.
 
 You can change the poem, title, and poet in the second notebook cell.
+
+## Run the web frontend
+
+First prepare the classifier export and Qwen/MLX model as described above.
+Then start the FastAPI server from the repository root:
+
+```bash
+source .venv/bin/activate
+uvicorn api:app --host 127.0.0.1 --port 8000
+```
+
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in a browser. Enter a poem
+and optionally provide its title and poet, then select **Analyze poem**. The
+backend runs classification first and generates the literary interpretation
+second. The first request may take longer while the MLX model loads.
+
+The frontend calls:
+
+```text
+POST /analyze
+{
+  "poem": "Your poem text",
+  "title": "Optional title",
+  "poet": "Optional poet"
+}
+```
+
+The response contains `predictions`, `interpretation`,
+`duration_seconds`, and `word_count`. The interpretation is rendered as
+sanitized Markdown in the browser. The frontend loads `marked` and
+`DOMPurify` from public CDNs; an internet connection is therefore needed for
+those browser assets unless they are later vendored locally.
 
 ## Use the classifier from Python
 
@@ -168,7 +208,7 @@ Integrated Gradients approximation slower but more accurate.
 
 ## Use the literary interpreter from Python
 
-`interpreter.py` lazily loads Qwen and the adapter on the first request:
+`interpreter.py` lazily loads Qwen on the first request:
 
 ```python
 from interpreter import interpret_poem
@@ -177,14 +217,34 @@ interpretation = interpret_poem(
     poem,
     title="Optional title",
     poet="Optional poet",
-    max_new_tokens=900,
+    max_new_tokens=800,
 )
 print(interpretation)
 ```
 
 The interpreter validates that the poem is non-empty and instructs the model
-to ground its analysis in the supplied text. Model generation is stochastic,
-so repeated runs may differ.
+to ground its analysis in the supplied text. Generation is deterministic by
+default and capped at 800 new tokens; the prompt also asks for an
+interpretation under 450 words.
+
+On Apple Silicon, `interpret_poem_mlx` uses the 4-bit MLX version of the same
+model and is substantially faster than the PyTorch/MPS path:
+
+```python
+from interpreter import interpret_poem_mlx
+
+interpretation = interpret_poem_mlx(
+    poem,
+    title="Optional title",
+    poet="Optional poet",
+    max_tokens=800,
+)
+print(interpretation)
+```
+
+The first MLX call downloads the quantized model (about 2.5 GB) and caches it
+locally. The MLX runtime is intended for macOS/Apple Silicon; use
+`interpret_poem` for other platforms.
 
 ## Train or export the classifier
 
@@ -246,10 +306,9 @@ the notebook demo overrides the threshold to 0.3.
 
 ### Interpreter
 
-The interpreter uses `Qwen/Qwen2.5-1.5B-Instruct` with a PEFT LoRA adapter.
-The adapter metadata records QLoRA training with 4-bit NF4 quantization on
-302 filtered examples from `poemsum_test.csv` (240 train, 31 validation, and
-31 test rows).
+The interpreter uses `Qwen/Qwen3-4B-Instruct-2507` directly. Earlier local
+Qwen adapter artifacts may still exist for training or experimentation, but
+the current inference path does not load them.
 
 ## Limitations
 
@@ -263,12 +322,12 @@ The adapter metadata records QLoRA training with 4-bit NF4 quantization on
   poem.
 - Long poems are truncated by the classifier at 512 tokens and by the
   interpreter input limit.
-- The code currently loads the classifier on CPU. Large-model interpreter
-  generation can require substantial memory.
+- The code currently loads the classifier on CPU. Qwen generation on MPS or
+  CPU can require substantial memory and time.
 
 ## License
 
 This repository does not currently include a license file. Treat it as
 all-rights-reserved unless the project owner provides separate permission.
-Review the licenses for DeBERTa, Qwen, Transformers, PEFT, and each dataset
+Review the licenses for DeBERTa, Qwen, Transformers, and each dataset
 before redistributing code, weights, or derived artifacts.

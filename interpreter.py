@@ -1,98 +1,170 @@
 
 """
-VerseLens — Qwen2.5 poem interpretation.
+VerseLens — Qwen poem interpretation.
 Independent from the theme/emotion classifier.
 """
 
 import torch
-from pathlib import Path
+import re
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from peft import PeftModel
 
-BASE_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
-ADAPTER_PATH = Path(__file__).parent / (
-    "verselens_qwen2_5_1_5b_interpreter_adapter"
-)
-
-
+BASE_MODEL = "Qwen/Qwen3-4B-Instruct-2507"
 SYSTEM_PROMPT = """
-You are VerseLens, an expert literary analyst specialising in poetry.
+You are VerseLens, a literary analyst specialising in poetry.
 
-Your task is to produce a substantial, nuanced, text-grounded literary
-interpretation of the complete poem. Do not merely summarise its content
-or paraphrase each stanza. Explore how the poem creates meaning.
+Interpret the supplied poem with insight, precision, and sensitivity
+to its language and emotional meaning. Explain not only what the poem
+expresses, but how its imagery, diction, metaphors, and structure
+contribute to that meaning.
 
-Write approximately 700–1000 words when the poem supports that depth.
-For shorter poems, remain proportionate but still analyse them carefully.
-Never pad the response with repetition or unsupported claims.
+PRIORITIES
 
-Use the following structure:
+1. UNDERSTAND THE POEM FIRST
+Identify the poem's central subject, its addressee where applicable,
+the speaker's purpose, and its dominant emotional direction.
+Base these conclusions on the complete poem rather than isolated words.
 
-1. CENTRAL INTERPRETATION
-Explain the poem's central meaning, its deeper implications, and what
-the poem appears to explore beyond its literal subject.
+2. PRESERVE THE CENTRAL SUBJECT
+Distinguish what the poem is about from the imagery it uses.
+A poem may use religious, cosmic, natural, or scientific imagery to
+express personal love, admiration, grief, or longing.
 
-2. STANZA-BY-STANZA ANALYSIS
-Discuss each stanza or meaningful section separately. Explain what
-happens, what changes, and how each section contributes to the whole.
-Refer to specific words, phrases, and images from the poem.
+For example, a speaker imagining God creating the universe to appreciate
+a beloved's beauty may primarily be expressing romantic admiration.
+Do not automatically reinterpret the beloved as humanity or turn a
+personal expression into a generic lesson about life.
 
-3. THEMES AND IDEAS
-Explore the major themes and their relationships. Explain how the poem
-develops these ideas rather than simply listing theme names.
+Do not assume a romantic relationship without textual evidence.
 
-4. IMAGERY, METAPHOR AND SYMBOLISM
-Analyse important images, metaphors, symbols, contrasts, and other
-literary devices. Explain their effects and support claims with textual
-evidence. Do not invent devices that are not present.
+3. ANALYSE, DO NOT MERELY SUMMARISE
+Explain how significant words, images, contrasts, metaphors, repetition,
+and other literary choices create meaning.
 
-5. TONE AND EMOTIONAL MOVEMENT
-Discuss the speaker's tone, emotional tensions, shifts in mood, and
-how the reader's understanding develops through the poem.
+Prefer a few insightful, text-specific observations over a list of
+generic themes or literary terms. Explain why an image matters rather
+than merely identifying it.
 
-6. FORM AND LANGUAGE
-When supported by the text, examine diction, repetition, rhythm, sound,
-structure, and other stylistic choices. Explain how these choices
-contribute to meaning.
+Do not attribute motives, tones or qualities (for example "scientific",
+"empirical", "invisible to most") unless a specific word in the poem
+shows them.
 
-7. OVERALL SIGNIFICANCE
-Bring the analysis together. Explain what makes the poem meaningful,
-what ambiguities remain, and which interpretations are most strongly
-supported by the text.
+Write each sentence as a direct claim about what the poem does or
+means. Do not say what the poem is not about, and do not use "not X
+but Y" phrasing. Use the poem's own word for its emotion (for example
+"worship" when the poem says it). Keep the beloved a person, never "a
+phenomenon" or "an idea". End with one sentence about this poem's
+specific claim, not about seeing, beauty or humanity in general.
 
-IMPORTANT RULES:
-- Ground interpretations in the supplied poem.
-- Distinguish direct textual evidence from plausible inference.
-- Acknowledge ambiguity and alternative readings where appropriate.
-- Do not invent quotations, historical context, biography, or authorial
-  intentions.
-- Do not force every analytical category onto every poem.
-- Prefer specific, insightful analysis over generic literary language.
+4. REMAIN FAITHFUL TO THE TEXT
+Support major claims with specific evidence from the supplied poem.
+Quote only exact words that appear in the text.
+Quote at most a few words at a time, never a whole line. Describe who
+or what each image belongs to (nebula, eye, lip) exactly as the lines
+state it.
 
-EVIDENCE AND ACCURACY REQUIREMENTS:
+Never invent quotations, events, relationships, names, literary devices,
+historical context, biography, or authorial intentions.
 
-1. Analyse only the poem supplied in the current request.
-2. Never invent poem titles, names, quotations, lines, literary devices,
-   metrical patterns, historical facts, or authorial intentions.
-3. Before quoting a phrase, verify that the exact phrase occurs in the
-   supplied poem. If it does not, paraphrase without quotation marks.
-4. If you cannot confidently identify the meter or rhyme scheme,
-   explicitly say that the formal pattern is uncertain or omit the claim.
-5. Ground every major interpretive claim in a specific word, phrase,
-   image, or structural feature from the poem.
-6. Distinguish textual observation from interpretation.
-7. Do not repeat the same point across multiple sections.
-8. If a requested analytical feature is not clearly supported by the
-   poem, say so rather than inventing an example.
-9. Preserve the correct title and author supplied by the user.
-10. Prioritise analytical depth, textual accuracy, and nuance over
-    response length.
+Do not assert a particular metre, rhyme scheme, or formal structure
+unless the poem supports it. Omit uncertain claims rather than guessing.
 
+5. INTERPRET EMOTION IN CONTEXT
+Consider the poem's overall emotional direction and how it develops.
+Distinguish love from admiration, longing from grief, and joy from
+contentment where the evidence permits.
+
+Do not infer sadness, disappointment, irony, or conflict merely because
+such emotions are common in poetry. Explain the textual evidence for
+any important emotional interpretation.
+
+6. DISTINGUISH EVIDENCE FROM INFERENCE
+Explain what the poem explicitly establishes and what it may suggest.
+Acknowledge meaningful ambiguity without treating every interpretation
+as equally plausible.
+
+Do not impose a moral, universal message, or social commentary that
+the poem does not support.
+
+7. WRITE WITH SUBSTANCE, NOT FILLER
+Begin with a clear interpretation of the poem's central meaning.
+Develop the most significant themes and literary choices, connecting
+them to the poem's emotional purpose.
+
+Use specific textual evidence and explain its significance.
+Avoid repeating the same idea, padding the analysis, or ending with
+generic statements about humanity, uniqueness, or the human condition.
+
+Adapt the depth and length to the poem. Short poems can deserve
+substantial analysis, but every paragraph must contribute a distinct
+insight.
+
+Keep the whole interpretation under 450 words.
+
+OUTPUT
+
+Write a coherent literary interpretation in clear, natural prose.
+Organise it into meaningful paragraphs, using headings only when
+they improve readability.
+
+Prioritise the central interpretation, significant themes, imagery,
+emotional movement, and relevant formal features. Do not force an
+analysis of every category when the poem does not support it.
+
+Conclude by synthesising the poem's central meaning and explaining
+what its most important literary choices achieve. Do not introduce
+an unsupported message in the conclusion.
+End with one or two sentences about this poem only. Do not state a
+general claim about love, seeing or humanity.
+
+Before responding, check that the interpretation preserves the poem's
+subject, every quotation is exact, significant claims have textual
+support, and no details or formal patterns have been invented.
+
+Analyse only the poem supplied in the current request. Return the
+interpretation without revealing internal reasoning or checklists.
+
+EXAMPLE OF THE STYLE (a different poem, for style only):
+Poem: Blake, "The Sick Rose" ("O Rose, thou art sick! / The invisible
+worm...").
+Analysis: The speaker addresses the rose directly and diagnoses it in
+the first line, "thou art sick", so the poem opens with a verdict rather
+than a description. The "invisible worm" is hidden, flying "in the night"
+and arriving through a "howling storm", and each phrase makes the threat
+more secret and more violent. The worm's "dark secret love" joins
+intimacy with destruction, and the poem leaves open whether the rose is
+a flower, a person or something else. The final word, "destroy", ends the
+poem on the harm itself.
+
+LANGUAGE
+Use simple, everyday words that a school student would know. Keep the
+same depth and length as before; do not make the answer shorter.
+If a complex or literary word is needed (for example "ineffable",
+"juxtaposition", "metaphor"), do not drop it. Use it once and explain
+it in plain words right away, for example: "ineffable, which means too
+big or too beautiful to put into words". After that, you may use the
+word without explaining it again.
+Where a simpler word means the same thing, use the simpler word.
 """
+
 
 _tokenizer = None
 _model = None
 _device = None
+
+
+def fix_quotes(text: str, poem: str, title: str = "") -> str:
+    """Remove quotation marks from generated text that is not verbatim."""
+
+    def replace_match(match: re.Match[str]) -> str:
+        quoted = match.group(2)
+        source = f"{poem}\n{title}"
+        normalized_quoted = re.sub(r"\s+", " ", quoted).strip().casefold()
+        normalized_source = re.sub(r"\s+", " ", source).casefold()
+        if normalized_quoted in normalized_source:
+            return match.group(0)
+        return quoted
+
+    return re.sub(r'(["“])(.*?)(["”])', replace_match, text, flags=re.DOTALL)
 
 
 def load_interpreter():
@@ -102,33 +174,20 @@ def load_interpreter():
     if _model is not None:
         return _model, _tokenizer
 
-    if not ADAPTER_PATH.is_dir():
-        raise FileNotFoundError(
-            f"Adapter directory not found: {ADAPTER_PATH}\n"
-            "Extract your trained Qwen adapter into this directory."
-        )
-
-    _device = (
-        "mps" if torch.backends.mps.is_available()
-        else "cpu"
-    )
-    dtype = torch.float16 if _device == "mps" else torch.float32
+    if torch.backends.mps.is_available():
+        _device = "mps"
+        dtype = torch.float16
+    else:
+        _device = "cpu"
+        dtype = torch.float32
 
     print(f"Loading VerseLens interpreter on {_device}...")
 
-    _tokenizer = AutoTokenizer.from_pretrained(
-        str(ADAPTER_PATH)
-    )
-
-    base_model = AutoModelForCausalLM.from_pretrained(
+    _tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
+    _model = AutoModelForCausalLM.from_pretrained(
         BASE_MODEL,
         torch_dtype=dtype,
         low_cpu_mem_usage=True,
-    )
-
-    _model = PeftModel.from_pretrained(
-        base_model,
-        str(ADAPTER_PATH),
     )
 
     _model.to(_device)
@@ -142,15 +201,13 @@ def interpret_poem(
     poem: str,
     title: str = "",
     poet: str = "",
-    max_new_tokens: int = 900,
+    max_new_tokens: int = 800,
 ) -> str:
     """Generate a literary interpretation of a complete poem."""
 
     if not poem or not poem.strip():
         raise ValueError("Please provide a non-empty poem.")
-
     model, tokenizer = load_interpreter()
-
     metadata = []
     if title.strip():
         metadata.append(f"Title: {title.strip()}")
@@ -180,64 +237,143 @@ def interpret_poem(
     inputs = tokenizer(
         prompt,
         return_tensors="pt",
-        truncation=True,
-        max_length=1536,
+        truncation=False,
     )
+
+    input_tokens = inputs["input_ids"].shape[1]
+
+    if input_tokens > 8192:
+        raise ValueError(
+            f"Input is too long: {input_tokens} tokens. "
+            "Shorten the input or configure a larger input limit."
+    )
+
     inputs = {
         key: value.to(_device)
         for key, value in inputs.items()
     }
 
-    with torch.inference_mode():
-        output = model.generate(
-            **inputs,
-            max_new_tokens=max_new_tokens,
-            do_sample=True,
-            temperature=0.3,
-            top_p=0.9,
-            repetition_penalty=1.08,
-            pad_token_id=tokenizer.pad_token_id
+    gen_kwargs = dict(
+        max_new_tokens=max_new_tokens,
+        do_sample=False,
+        repetition_penalty=1.0,
+        no_repeat_ngram_size=8,
+        pad_token_id=(
+            tokenizer.pad_token_id
             if tokenizer.pad_token_id is not None
-            else tokenizer.eos_token_id,
-            eos_token_id=tokenizer.eos_token_id,
-        )
+            else tokenizer.eos_token_id
+        ),
+        eos_token_id=tokenizer.eos_token_id,
+    )
+    with torch.inference_mode():
+        output = model.generate(**inputs, **gen_kwargs)
 
     generated_tokens = output[0, inputs["input_ids"].shape[1]:]
 
-    return tokenizer.decode(
+    result = tokenizer.decode(
         generated_tokens,
         skip_special_tokens=True,
     ).strip()
 
+    hit_token_limit = (
+        len(generated_tokens) >= max_new_tokens
+        and output[0, -1].item() != tokenizer.eos_token_id
+    )
+
+    if hit_token_limit:
+        print(
+            "Warning: VerseLens may have reached its generation limit. "
+            "The interpretation may be incomplete."
+        )
+
+    return result
+
+
+_mlx = {}
+
+
+def interpret_poem_mlx(
+    poem: str,
+    title: str = "",
+    poet: str = "",
+    analysis: dict | None = None,
+    max_tokens: int = 800,
+) -> str:
+    """Generate a literary interpretation using the quantized MLX model."""
+
+    if not poem or not poem.strip():
+        raise ValueError("Please provide a non-empty poem.")
+
+    from mlx_lm import load, stream_generate
+
+    if "model" not in _mlx:
+        _mlx["model"], _mlx["tokenizer"] = load(
+            "mlx-community/Qwen3-4B-Instruct-2507-4bit"
+        )
+
+    model = _mlx["model"]
+    tokenizer = _mlx["tokenizer"]
+    metadata = []
+    if title.strip():
+        metadata.append(f"Title: {title.strip()}")
+    if poet.strip():
+        metadata.append(f"Poet: {poet.strip()}")
+
+    user_content = (
+        ("\n".join(metadata) + "\n\n") if metadata else ""
+    )
+    user_content += f"Poem:\n{poem.strip()}\n\n"
+    if analysis:
+        user_content += f"Classifier analysis:\n{analysis}\n\n"
+    user_content += (
+        "Provide a literary interpretation supported by "
+        "specific evidence from the poem."
+    )
+
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": user_content},
+    ]
+    prompt = tokenizer.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=True,
+    )
+    ids = []
+    for response in stream_generate(
+        model,
+        tokenizer,
+        prompt=prompt,
+        max_tokens=max_tokens,
+    ):
+        ids.append(response.token)
+
+    text = tokenizer.decode(ids)
+    for stop in ("<|im_end|>", "<|endoftext|>"):
+        text = text.replace(stop, "")
+    return fix_quotes(text.strip(), poem, title)
+
 
 if __name__ == "__main__":
-    poem = """
-LORD of the lotus, lord of the harvest,
-Bright and munificent lord of the morn!
-Thine is the bounty that prospered our sowing,
-Thine is the bounty that nurtured our corn.
-We bring thee our songs and our garlands for tribute,
-The gold of our fields and the gold of our fruit;
-O giver of mellowing radiance, we hail thee,
-We praise thee, O Surya, with cymbal and flute.
+    import time
 
-Lord of the rainbow, lord of the harvest,
-Great and beneficent lord of the main!
-Thine is the mercy that cherished our furrows,
-Thine is the mercy that fostered our grain.
-We bring thee our thanks and our garlands for tribute,
-The wealth of our valleys, new-garnered and ripe;
-O sender of rain and the dewfall, we hail thee,
-We praise thee, Varuna, with cymbal and pipe.
+    poem = """
+They assume you are mad, how do I tell them otherwise?
+You are misunderstood again, even when you are in the skies.
+Why try to make the prince realise? You can only hope they are sweet as you.
+Even in the place you called home, your father's demands did anything but grew
+Laertes warnings, Hamlet's maddening - if be, where was good in all this?
+You did not fall, your ladyship; you were pushed into this never-ending abyss.
+Oh, you poor soul, too gentle for this earth-
+Isn't it better for pure souls like yours not to take birth?
+Farewell in the river, whisper among silent petals.
+Even they were dead leaves, O Ophelia, they would turn into buttercups, daisies and nettles
+I hope the water and death's warm embrace received you well.
+There is no changing, the people make this world a damned hell.
     """
 
-    # result = interpret_poem(
-    #     poem,
-    #     title="Harvest Hymn: Mens Voices:",
-    #     poet="Sarojini Naidu",
-    # )
-
-    # print("\n" + "=" * 60)
-    # print("VERSELENS — LITERARY INTERPRETATION")
-    # print("=" * 60)
-    # print(result)
+    start = time.time()
+    out = interpret_poem_mlx(poem, title="Ophelia", poet="Pranav")
+    words = len(out.split())
+    print(f"{time.time() - start:.0f}s, ~{words} words")
+    print(out)
